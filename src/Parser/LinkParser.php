@@ -23,6 +23,15 @@ class LinkParser implements HtmlParserInterface
                 continue;
             }
 
+            
+            if (array_key_exists('host', parse_url($link)) && $this->isExternal($link)) {
+                $search = "\"{$link}";
+                $replace = "\"{$this->modifyLink($link)}";
+                $text = str_replace($search, $replace, $text);
+
+                continue;
+            }
+
             $text = str_replace($link, $this->modifyLink($link), $text);
         }
 
