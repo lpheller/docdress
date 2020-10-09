@@ -2,10 +2,11 @@
 
 namespace Tests;
 
-use Docdress\Parser\LinkParser;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Route;
 use Mockery as m;
+use Docdress\Parser\LinkParser;
+use Docdress\Parser\LinkNameParser;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 
 class LinkParserTest extends TestCase
 {
@@ -13,8 +14,10 @@ class LinkParserTest extends TestCase
     public function it_adds_target_blank_to_external_links()
     {
         $result = (new LinkParser)->parse('<a href="https://www.example.org">foo</a>');
-
         $this->assertSame('<a href="https://www.example.org" target="_blank">foo</a>', $result);
+
+        $result = (new LinkParser)->parse('<a href="https://www.example.org">https://www.example.org</a>');
+        $this->assertSame('<a href="https://www.example.org" target="_blank">https://www.example.org</a>', $result);
     }
 
     /** @test */
